@@ -1,0 +1,20 @@
+schema = 1
+project = "daukle/example-java-hello-jar"
+version = "1.0.0"
+
+[modules]
+
+# A resolver turns "owner/name@range" into a URL, and is itself acquired by a
+# pinned URL: ranging the thing that resolves ranges would be circular, so a
+# resolver can never carry a range. The commit is named rather than a branch
+# because the digest pins these exact bytes.
+[resolvers.github]
+url = "https://raw.githubusercontent.com/daukle/daukle/23aa207d064bc2ed3e6fb30937414deb1429f3b1/plugins/github-releases.lua"
+sha256 = "8f6ba5b69781a7cd1f9a3fc36f82f2ba7448063d13c8817c120ea6144ffb1674"
+
+[plugins]
+java = { resolver = "github", coordinate = "daukle/java@^1.0.0" }
+
+[toolchains.java]
+version = "21"
+main = "com.example.Main"

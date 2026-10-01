@@ -1,0 +1,2 @@
+kind: generic
+description: Example projects built with daukle. One directory per example, each a self-contained repository shape holding daukle.toml and its sources and no build file of its own, acquiring its plugins by coordinate exactly as a user would. Two of them are managed toolchains, where daukle provisions the tool and owns the generated build file; one is a dependency writer, where daukle edits a file you own and the real tool still does the work.
