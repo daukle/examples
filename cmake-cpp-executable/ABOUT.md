@@ -20,3 +20,15 @@ generated file is C++ from its first line rather than C with a C++ file in it.
 `#else`, so a `defines` list that silently failed to reach the compiler would change the output and
 fail this example rather than passing quietly. A test that cannot fail is the failure mode this
 repository is most careful about.
+
+## The two `.txt` files, which are harness inputs rather than part of the example
+
+`task.txt` and `expect-output.txt` are read by `test/run.sh`, not by daukle. `task.txt` holds the
+one task CI runs here, `cmake:run`, and `expect-output.txt` the clause its output must contain,
+`hello from daukle`. They sit beside the example rather than in `test/` so each example
+carries its own expectations. An example with no `task.txt` is checked for its generated files
+and never run.
+
+**There is no committed executable here, and nothing is missing.** `cmake:run` really does build and
+run the program; `build/` is gitignored, which is the only reason you cannot see the result in the
+repository.

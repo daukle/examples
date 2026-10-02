@@ -1,0 +1,37 @@
+schema = 1
+project = "daukle/example-npm-github-source"
+version = "1.0.0"
+
+[modules]
+
+# The same producer statement as npm-dependency-writer, delivered the other way:
+# that example reads ./producer/daukle.toml off disk, this one fetches a real
+# release asset. The producer manifest is byte-identical in both, so what
+# differs is only how it arrives.
+[sources."example/greeter"]
+kind = "github-releases"
+repo = "daukle/examples"
+version = "2.0.0"
+tag = "greeter-{version}"
+
+[resolvers.github]
+url = "https://raw.githubusercontent.com/daukle/daukle/f9055f9a07011283009675f4ffbc0a9b783c50bd/plugins/github-releases.lua"
+sha256 = "3789865c266eb53fafcf7300d77a24461170c615195d92d0ddf88078c556e23e"
+
+[plugins]
+npm = { resolver = "github", coordinate = "daukle/npm@^1.0.0" }
+
+# daukle/github has no release, so it is acquired by pinned URL rather than by
+# coordinate. A plugin entry takes either shape; the digest is what both have in
+# common, and it is the digest rather than the coordinate that pins the bytes.
+github = { url = "https://raw.githubusercontent.com/daukle/github/3c18be4aaeb7071d4aae06e2de627a3c60acf9dd/plugin.lua", sha256 = "fd2b3b3e582e736f02ac3de70e85dbdde9000cf67d1acbab7bd14518af86abdd" }
+
+[[consumers]]
+id = "node"
+language = "npm"
+file = "package.json"
+configuration = "dependencies"
+
+  [consumers.dependencies."example/greeter"]
+  version = "^2.0.0"
+  modules = ["cli"]

@@ -36,9 +36,9 @@ module `cli` is `cowsay` at `^1.6.0`. This consumer asks for `example/greeter@^2
 the same way by every consumer language.
 
 **`kind = "path"` is a source plugin, not a toolchain.** It reads `./producer/daukle.toml` off disk.
-`daukle/github` is the same role reading a manifest from a release asset, and is what this would use
-once the producer publishes one. Nothing here can be `[toolchains.*]`, because neither plugin
-declares a toolchain.
+`daukle/github` is the same role reading a manifest from a release asset, and `npm-github-source`
+is that example: same producer manifest, byte for byte, fetched from a real release instead of
+read off disk. Nothing here can be `[toolchains.*]`, because neither plugin declares a toolchain.
 
 **Applying twice equals applying once.** Sync this example repeatedly and `package.json` stops
 changing after the first run. That property is pinned by every success case in the plugin's own
@@ -50,3 +50,14 @@ It does not replace npm, and it does not install anything. `daukle sync` here is
 `npm install` is still yours to run, with npm still installed. If you came looking for the thing the
 `java` and `cmake` examples do, this is not it, and no amount of configuration turns a
 `daukle.language` plugin into a toolchain.
+
+## How CI checks this example, which is not the same as the other three
+
+This example has no `task.txt`, so nothing is run: `test/run.sh` syncs it twice and compares every
+file in `expected/` byte for byte. The other three examples carry `task.txt` and
+`expect-output.txt`, which name the one task CI runs and a clause its output must contain. Both
+shapes live beside the example rather than in `test/`, so each example carries its own
+expectations.
+
+Syncing twice is the assertion, not a precaution: applying twice must equal applying once, and a
+dependency writer that appended on every run would pass a single sync.

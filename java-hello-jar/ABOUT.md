@@ -39,3 +39,15 @@ in `roots`. `javac -sourcepath` compiles what is reachable from the roots it is 
 
 Roughly 331 MB of JDK, with no progress reported while it downloads. It is cached per digest
 afterwards, shared by every project on the machine that pins the same JDK.
+
+## The two `.txt` files, which are harness inputs rather than part of the example
+
+`task.txt` and `expect-output.txt` are read by `test/run.sh`, not by daukle. `task.txt` holds the
+one task CI runs here, `java:run`, and `expect-output.txt` the clause its output must contain,
+`hello from daukle`. They sit beside the example rather than in `test/` so each example
+carries its own expectations. An example with no `task.txt` is checked for its generated files
+and never run.
+
+**There is no committed executable here, and nothing is missing.** `java:run` really does build and
+run the program; `build/` is gitignored, which is the only reason you cannot see the result in the
+repository.
